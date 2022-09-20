@@ -1,0 +1,241 @@
+{% extends 'listings/base.html' %}
+
+{% block content %}
+
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Ajouter une nouvelle voiture</h4>
+                        <p class="card-title-desc">Ici enrégistrer toute nouvellle voiture</p>
+                    </div>
+                    <!-- end card header -->
+
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title mb-4">Ajouter une voiture</h5>
+                            <form id="pristine-valid-example" action = "{% url 'customers:voitures' %}" novalidate method="post">
+                                {% csrf_token %}
+                                <input type="hidden"/>
+                                <div class="row">
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label>Marque</label>
+                                            <input type="text" name="marque" required data-pristine-required-message="Entrez la marque s'il vous plait" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label>Couleur</label>
+                                            <input type="text" name="couleur" required data-pristine-required-message="Entrez la Couleur s'il vous plait" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label>Année</label>
+                                            <input type="number" name="annee" required data-pristine-required-message="Entrez l'année s'il vous plaît" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label>Nombre de portes</label>
+                                            <input type="number" name="nb_portes" data-pristine-min-message="Entrez le nombre de portes" required class="form-control"/>
+                                        </div>
+                                    </div>
+                                   <div class="col-xl-4 col-md-6">
+                                        <div>
+                                            <h5 class="font-size-14 mb-3">Climatisée</h5>
+                                            <label class="form-check-label radio-inline" checked>
+                                                <input class="form-check-input" value = "OUI" type="radio" name="clim"
+                                                id="oui" checked> Oui
+                                            </label>
+                                            <label class="form-check-label radio-inline" >
+                                                <input class="form-check-input" value="NON" type="radio" name="clim"
+                                                id="non"> Non
+                                            </label>
+                                        </div>
+                                   </div>
+                                       <div class="col-xl-4 col-md-6">
+                                            <h5 class="font-size-14 mb-3">Energie</h5>
+                                            <label class="form-check-label radio-inline" checked>
+                                                <input class="form-check-input" value="Essence"  type="radio" name="energie"
+                                                id="essence" checked> Essence
+                                            </label>
+                                            <label class="form-check-label radio-inline" >
+                                                <input class="form-check-input" value="Electrique"  type="radio" name="energie"
+                                                id="electrique"> Electrique
+                                            </label>
+                                    </div>
+                                </div>
+                                <!-- end row -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="text-center">
+                                            <button  type="submit" name="enregistrer" class="btn btn-primary w-md">Enregistrer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr class="my-5">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Liste des voitures</h4>
+                                        <p class="card-title-desc">Ici consulter toutes les voitures.
+                                        </p>
+                                    </div>
+                                    <div class="card-body">
+                                        <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                                            <thead>
+                                            <tr>
+                                                <th>Marque</th>
+                                                <th>Couleur</th>
+                                                <th>Année</th>
+                                                <th>Portes</th>
+                                                <th>Climatisée</th>
+                                                <th>Energie</th>
+                                                <th> Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                {% for voiture in voitures %}
+                                                <tr>
+                                                    <td>{{voiture.marque}}</td>
+                                                    <td>{{voiture.couleur}}</td>
+                                                    <td>{{voiture.annee}}</td>
+                                                    <td>{{voiture.porte}}</td>
+                                                    <td>{{voiture.climatiser}}</td>
+                                                    <td>{{voiture.energie}}</td>
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-success waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#Modal{{voiture.id}}">
+                                                              <i class="mdi mdi-pencil d-block font-size-16">Modifier</i>
+                                                         </button>
+
+                                                         <button type="button" class="btn btn-danger waves-effect waves-light"data-bs-toggle="modal" data-bs-target="#myModal{{voiture.id}}">
+                                                              <i class="mdi mdi-trash-can d-block font-size-16">Supprimer</i>
+                                                         </button>
+
+                                                        <!-- modal de suppression -->
+                                                        <div id="myModal{{voiture.id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="ModalLabel">Suppression d'une voiture</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form action="{% url 'customers:supprimer' voiture_id=voiture.id %}" method="post">
+                                                                            {% csrf_token %}
+                                                                            <h2>Voulez-vous vraiment supprimer ??</h2>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Fermer</button>
+                                                                                <button type="submit" class="btn btn-danger waves-effect waves-light">Supprimer</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div><!-- /.modal-content -->
+                                                            </div><!-- /.modal-dialog -->
+                                                        </div>
+
+                                                        <!--modal de modification-->
+                                                        <div id="Modal{{voiture.id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="myModalLabel">Modification de voiture</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form action="{% url 'customers:modifier' voiture_id=voiture.id %}" method="post">
+                                                                            {% csrf_token %}
+                                                                            <div class="row">
+                                                                                <div class="col-xl-4 col-md-6">
+                                                                                    <div class="form-group mb-3">
+                                                                                        <label>Marque</label>
+                                                                                        <input type="text" value="{{voiture.marque}}" name="marque" required data-pristine-required-message="Entrez la marque s'il vous plait" class="form-control" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-xl-4 col-md-6">
+                                                                                    <div class="form-group mb-3">
+                                                                                        <label>Couleur</label>
+                                                                                        <input type="text" value="{{voiture.couleur}}" name="couleur" required data-pristine-required-message="Entrez la Couleur s'il vous plait" class="form-control" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-xl-4 col-md-6">
+                                                                                    <div class="form-group mb-3">
+                                                                                        <label>Année</label>
+                                                                                        <input type="number" value="{{voiture.annee}}" name="annee" required data-pristine-required-message="Entrez l'année s'il vous plaît" class="form-control" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-xl-4 col-md-6">
+                                                                                    <div class="form-group mb-3">
+                                                                                        <label>Nombre de portes</label>
+                                                                                        <input type="number" value="{{voiture.porte}}" name="nb_portes" data-pristine-min-message="Entrez le nombre de portes" required class="form-control"/>
+                                                                                    </div>
+                                                                                </div>
+                                                                               <div class="col-xl-4 col-md-6">
+                                                                                    <div >
+                                                                                        <h5 class="font-size-14 mb-3">Climatisée</h5>
+                                                                                        <label class="form-check-label radio-inline" checked>
+                                                                                            <input class="form-check-input" value = "OUI" type="radio" name="clim"
+                                                                                             checked> Oui
+                                                                                        </label>
+                                                                                        <label class="form-check-label radio-inline" >
+                                                                                            <input class="form-check-input" value="NON" type="radio" name="clim"
+                                                                                            > Non
+                                                                                        </label>
+                                                                                    </div>
+                                                                               </div>
+                                                                                   <div class="col-xl-4 col-md-6">
+                                                                                        <h5 class="font-size-14 mb-3">Energie</h5>
+                                                                                        <label class="form-check-label radio-inline" checked>
+                                                                                            <input class="form-check-input" value="Essence"  type="radio" name="energie"
+                                                                                             checked> Essence
+                                                                                        </label>
+                                                                                        <label class="form-check-label radio-inline" >
+                                                                                            <input class="form-check-input" value="Electrique"  type="radio" name="energie"
+                                                                                            > Electrique
+                                                                                        </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Fermer</button>
+                                                                                <button type="submit" class="btn btn-primary waves-effect waves-light">Enregistrer les modifications</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div><!-- /.modal-content -->
+                                                            </div><!-- /.modal-dialog -->
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- end cardaa -->
+                            </div> <!-- end col -->
+                        </div> <!-- end row -->
+                    </div>
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div> <!-- container-fluid -->
+</div>
+{% endblock %}

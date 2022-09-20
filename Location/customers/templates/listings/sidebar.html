@@ -1,0 +1,42 @@
+ <div class="vertical-menu">
+
+                <div data-simplebar class="h-100">
+
+                    <!--- Sidemenu -->
+                    <div id="sidebar-menu">
+                        <!-- Left Menu Start -->
+                        <ul class="metismenu list-unstyled" id="side-menu">
+                            <li class="menu-title" data-key="t-menu">Menu</li>
+
+                            <li>
+                                <a href="{% url 'customers:accueil' %}">
+                                    <i data-feather="home"></i>
+                                    <span data-key="t-dashboard">Accueil</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'customers:voitures' %}">
+                                    <i class="fas fa-car"></i>
+                                    <span data-key="t-dashboard">Voitures</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'customers:locations' %}">
+                                    <i class=" fas fa-check-circle"></i>
+                                    <span data-key="t-dashboard">Locations</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'customers:historique' %}">
+                                    <i class=" fas fa-edit"></i>
+                                    <span data-key="t-dashboard">Historique</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Sidebar -->
+                </div>
+            </div>
+

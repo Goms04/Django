@@ -1,0 +1,243 @@
+{% extends 'listings/base.html' %}
+
+{% block content %}
+
+<div class="page-content" xmlns="http://www.w3.org/1999/html">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Enregistrer une nouvelle location</h4>
+                        <p class="card-title-desc">Ici enregistrer toute nouvellle location de voiture</p>
+                    </div>
+                    <!-- end card header -->
+
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title mb-4">Enregistrer un client</h5>
+                            <form id="pristine-valid-example" action = "{% url 'customers:locations' %}" novalidate method="post">
+                                {% csrf_token %}
+                                <input type="hidden"/>
+                                <div class="row">
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label>Nom</label>
+                                            <input type="text" name="nom" required data-pristine-required-message="Entrez la nom s'il vous plait" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label>Prenom</label>
+                                            <input type="text" name="prenoms" required data-pristine-required-message="Entrez le  prenom s'il vous plaît" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="col-md-6 mb-4">
+                                            <h5 class="font-size-14 mb-3">Sexe</h5>
+                                            <label class="form-check-label radio-inline" checked>
+                                                <input class="form-check-input" value="M"  type="radio" name="sexe"
+                                                id="masculin" checked> Masculin
+                                            </label>
+                                            <label class="form-check-label radio-inline" >
+                                                <input class="form-check-input" value="F"  type="radio" name="sexe"
+                                                id="feminin"> Feminin
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label>Profession</label>
+                                            <input type="text" name="profession" required data-pristine-required-message="Entrez la profession s'il vous plait" class="form-control" />
+                                        </div>
+                                    </div>
+                                   <div class="col-md-6">
+                                        <div>
+                                            <h5 class="font-size-14 mb-3">Credible</h5>
+                                            <label class="form-check-label radio-inline" checked>
+                                                <input class="form-check-input" value = "OUI" type="radio" name="credible"
+                                                id="oui" checked> Oui
+                                            </label>
+                                            <label class="form-check-label radio-inline" >
+                                                <input class="form-check-input" value="NON" type="radio" name="credible"
+                                                id="non"> Non
+                                            </label>
+                                        </div>
+                                   </div>
+                                </div>
+
+
+                                <hr class="my-5">
+
+
+                                 <div class="row">
+                                     <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Choisir une voiture</label>
+                                        <select class="form-select" name="voiture_id">
+                                            <option class="text-center">------ choisir une voiture -------</option>
+                                            {% for voiture in voitures %}
+                                                <option class="text-center" value="{{voiture.id}}">{{voiture.marque}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Date d'emprunt</label>
+                                        <input class="form-control" type="datetime-local" name="date_debut">
+                                    </div>
+                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Date de retour</label>
+                                        <input class="form-control" type="datetime-local" name="date_fin">
+
+                                    </div>
+                                 </div>
+                                 </div>
+
+
+
+
+
+
+
+                                <!-- bouton enregistrer-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="text-center">
+                                            <button  type="submit" name="enregistrer" class="btn btn-primary w-md mb-3">Enregistrer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Liste des Locations</h4>
+                                        <p class="card-title-desc">Ici consulter toutes les Locations.
+                                        </p>
+                                    </div>
+                                    <div class="card-body">
+                                        <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                                            <thead>
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Prenoms</th>
+                                                <th>Sexe</th>
+                                                <th>Profession</th>
+                                                <th>Credible</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                {% for location in clients %}
+                                                <tr>
+                                                    <td>{{location.nom}}</td>
+                                                    <td>{{location.prenoms}}</td>
+                                                    <td>{{location.sexe}}</td>
+                                                    <td>{{location.profession}}</td>
+                                                    <td>{{location.credible}}</td>
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-success waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#Modal{{location.id}}">
+                                                            <i class="mdi mdi-pencil d-block font-size-16">Modifier</i>
+                                                        </button>
+
+                                                        <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#myModal{{location.id}}">
+                                                              <i class="mdi mdi-trash-can d-block font-size-16">Supprimer</i>
+                                                        </button>
+
+                                                        <a href="{% url 'customers:details_client' client_id=location.id %}"><button type="button" class="btn btn-dark waves-effect waves-light" >
+                                                              <i class="mdi mdi-information-variant">Détails</i>
+                                                        </button></a>
+
+                                                        <!-- modal de suppression -->
+                                                        <div id="myModal{{location.id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="ModalLabel">Suppression d'un client</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form action="{% url 'customers:supprimer_client' client_id=location.id %}" method="post">
+                                                                            {% csrf_token %}
+                                                                            <h2>Voulez-vous vraiment supprimer ??</h2>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Fermer</button>
+                                                                                <button type="submit" class="btn btn-danger waves-effect waves-light">Supprimer</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div><!-- /.modal-content -->
+                                                            </div><!-- /.modal-dialog -->
+                                                        </div>
+
+                                                        <!--modal de modification-->
+                                                        <div id="Modal{{location.id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="myModalLabel">Modification d'un client</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form action="{% url 'customers:modifier_client' client_id=location.id %}" method="post">
+                                                                            {% csrf_token %}
+                                                                            <div class="row">
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group mb-3">
+                                                                                        <label class="form-label">Nom</label>
+                                                                                        <input type="text" value="{{location.nom}}" name="nom" required data-pristine-required-message="Entrez le nom s'il vous plait" class="form-control" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group mb-3">
+                                                                                        <label class="form-label">Prénoms</label>
+                                                                                        <input type="text" value="{{location.prenoms}}" name="prenoms" required data-pristine-required-message="Entrez le prenoms s'il vous plaît" class="form-control" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="form-group mb-3">
+                                                                                        <label class="form-label">Profession</label>
+                                                                                        <input type="text" value="{{location.profession}}" name="profession" required data-pristine-required-message="Entrez la profession s'il vous plaît" class="form-control" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Fermer</button>
+                                                                                <button type="submit" class="btn btn-primary waves-effect waves-light">Enregistrer les modifications</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div><!-- /.modal-content -->
+                                                            </div><!-- /.modal-dialog -->
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- end row -->
+                    </div>
+                </div><!-- end card -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+    </div> <!-- container-fluid -->
+</div>
+
+
+{% endblock %}

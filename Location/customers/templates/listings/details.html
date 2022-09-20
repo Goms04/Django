@@ -1,0 +1,62 @@
+{% extends 'listings/base.html' %}
+
+{% block content %}
+
+
+ <div class="card-body">
+
+     <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+         <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénoms</th>
+                <th>Sexe</th>
+                <th>Profession</th>
+                <th>Voiture Louée</th>
+                <th>Date d'emprunt</th>
+                <th>Date de retour</th>
+            </tr>
+         </thead>
+         <tbody>
+
+            {% for l in loc %}
+            <tr>
+                <td>{{l.client.nom}}</td>
+                <td>{{l.client.prenoms}}</td>
+                <td>{{l.client.sexe}}</td>
+                <td>{{l.client.profession}}</td>
+                <td>{{l.voiture.marque}}({{l.voiture.couleur}}, {{l.voiture.annee}}, {{l.voiture.porte}} portes, {{l.voiture.energie}})</td>
+                <td>{{l.date_debut}}</td>
+                <td>{{l.date_fin}}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+     </table>
+ </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
